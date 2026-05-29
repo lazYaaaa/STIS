@@ -1,0 +1,47 @@
+; ЛР2: предметная область «Библиотека» — готовый файл для SNePS
+; Иерархия понятий: AdultReader -> Reader -> Person, ChildReader -> Reader, Librarian -> Person, Book -> Item.
+; Файл содержит факты ISA, правила транзитивности, перенос instance_of и связи borrows/recommends.
+
+(isa AdultReader Reader)
+(isa ChildReader Reader)
+(isa Reader Person)
+(isa Librarian Person)
+(isa Book Item)
+
+(defrule isa-trans
+  (and (isa ?A ?B) (isa ?B ?C))
+  (isa ?A ?C))
+
+(defrule instance-via-isa
+  (and (instance-of ?X ?A) (isa ?A ?B))
+  (instance-of ?X ?B))
+
+(defrule reader-borrows-book
+  (and (instance-of ?X Reader) (instance-of ?Y Book))
+  (borrows ?X ?Y))
+
+(defrule librarian-recommends-book
+  (and (instance-of ?X Librarian) (instance-of ?Y Book))
+  (recommends ?X ?Y))
+
+(isa-rel BorrowsReader BorrowsPerson)
+(isa-rel BorrowsPerson Borrows)
+
+(isa-rel RecommendsLibrarian RecommendsPerson)
+(isa-rel RecommendsPerson Recommends)
+
+(defrule isa-rel-trans
+  (and (isa-rel ?A ?B) (isa-rel ?B ?C))
+  (isa-rel ?A ?C))
+
+(defrule rel-instance-from-object-type-book
+  (and (borrows ?X ?Y) (instance-of ?Y Book))
+  (rel-instance-of (borrows ?X ?Y) BorrowsReader))
+
+(defrule rel-instance-from-object-type-recommendation
+  (and (recommends ?X ?Y) (instance-of ?Y Book))
+  (rel-instance-of (recommends ?X ?Y) RecommendsLibrarian))
+
+(defrule rel-instance-via-isa
+  (and (rel-instance-of ?R ?A) (isa-rel ?A ?B))
+  (rel-instance-of ?R ?B))
