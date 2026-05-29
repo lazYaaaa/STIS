@@ -12,8 +12,7 @@
 - [lr2/code/sneps_ready.sneps](lr2/code/sneps_ready.sneps)
 - [lr2/tests/tests.sneps](lr2/tests/tests.sneps)
 
-Запуск и проверка
-- Используется контейнерный запуск через `RUN_ALL.md`.
-- Пояснительная версия содержится в `code/sneps_logic.sneps`.
-- SNePS-ready версия содержится в `code/sneps_ready.sneps`.
-- Примеры фактов и запросов находятся в `tests/tests.sneps`.
+Содержимое папки
+- Пояснительная версия оформлена как псевдокод.
+- Исполняемая часть написана на Java.
+- Примеры фактов и запросов находятся в тестовой части лабораторной.
