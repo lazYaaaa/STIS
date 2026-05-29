@@ -3,7 +3,7 @@ import java.util.HashSet;
 
 public class Lab3API {
 
-    private static final String CONFIG = "C:\\newprj\\ROFL\\sneps\\Sneps-2.7.0-Windows\\JavaSnepsAPI\\java_sneps_config.config";
+    private static final String CONFIG = System.getenv("JAVA_API_CONFIG");
 
     private static void tellAll(JavaSnepsAPI api, String section, String[] commands) {
         System.out.println(section);
