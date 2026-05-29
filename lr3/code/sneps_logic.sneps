@@ -1,0 +1,21 @@
+% ЛР3: предметная область «Университет» — пояснительный SNePS-подобный файл
+% Иерархия понятий: Undergraduate -> Student -> Person, Graduate -> Student -> Person,
+% Professor -> Person, Course — отдельное понятие.
+
+% --- Иерархия понятий
+isa(Undergraduate, Student).
+isa(Graduate, Student).
+isa(Student, Person).
+isa(Professor, Person).
+
+% --- Транзитивность ISA
+rule(isa_transitive, [isa(A,B), isa(B,C)], isa(A,C)).
+
+% --- Перенос instance_of через ISA
+rule(instance_via_isa, [instance_of(X,A), isa(A,B)], instance_of(X,B)).
+
+% --- Связи предметной области
+% Преподаватель преподаёт курс.
+% Студент посещает курс.
+rule(professor_teaches_course, [instance_of(P,Professor), instance_of(C,Course)], teaches(P,C)).
+rule(student_takes_course, [instance_of(S,Student), instance_of(C,Course)], takes(S,C)).
