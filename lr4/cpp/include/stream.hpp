@@ -13,4 +13,4 @@ public:
     virtual size_t GetPosition() const = 0;
 };
 
-} // namespace lr4
+}
