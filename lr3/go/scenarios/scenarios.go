@@ -1,6 +1,6 @@
 package scenarios
 
-import ont "example.com/lr3go/ontology"
+import ont "github.com/lazYaaaa/STIS/lr3/go/ontology"
 
 type Scenario struct {
     Name         string

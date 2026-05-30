@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"example.com/lr3go/scenarios"
+	"github.com/lazYaaaa/STIS/lr3/go/scenarios"
 )
 
 func main() {
