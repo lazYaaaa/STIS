@@ -1,5 +1,7 @@
 Лабораторная работа 2 — моделирование фрагмента предметной области в SNePS
 
+Автор: Лазарев Ярослав Б23-514
+
 Предметная область
 - Библиотека.
 - Понятия: `Person`, `Reader`, `AdultReader`, `ChildReader`, `Librarian`, `Book`.
@@ -8,11 +10,11 @@
 
 Файлы в папке
 - [lr2/er_diagram.mmd](lr2/er_diagram.mmd)
-- [lr2/code/sneps_logic.sneps](lr2/code/sneps_logic.sneps)
-- [lr2/code/sneps_ready.sneps](lr2/code/sneps_ready.sneps)
+- [lr2/domain/model.md](lr2/domain/model.md)
+- [lr2/domain/ERD.png](lr2/domain/ERD.png)
 - [lr2/tests/tests.sneps](lr2/tests/tests.sneps)
 
 Содержимое папки
-- Пояснительная версия оформлена как псевдокод.
+- Пояснительная версия оформлена как описание предметной области.
 - Исполняемая часть написана на Java.
 - Примеры фактов и запросов находятся в тестовой части лабораторной.
