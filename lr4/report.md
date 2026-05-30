@@ -3,7 +3,7 @@
 Проект: LR4 — ленивые последовательности и потоки (C++17)
 
 Кратко
-- Реализованы: `Sequence<T>` (абстрактный), `LazySequence<T>` (ленивая последовательность с мемоизацией), `MaterializedSequence<T>` (полностью материализованная последовательность) и alias `EagerSequence<T>` как более читаемое имя для материализованной последовательности.
+- Реализованы: `Sequence<T>` (абстрактный), `LazySequence<T>` (ленивая последовательность с мемоизацией), `VectorSequence<T>` (полностью материализованная последовательность; раньше называлась MaterializedSequence).
 - Реализовано семейство потоков: `ReadOnlyStream<T>` и `WriteOnlyStream<T>`.
 - Реализована задача: синхронизация временных потоков по опорному потоку с окном `tau`.
 - Написаны модульные тесты (Catch2) и интегрирован единый исполняемый файл `lr4`, в который встроен тестовый раннер. Запуск тестов: `lr4 --run-tests`.
@@ -11,7 +11,7 @@
 - Добавлен CI workflow (см. `.github/workflows/ci.yml`).
 
 Что сделано (подробно)
-- `cpp/include/sequence.hpp` — `Sequence<T>` (интерфейс), `MaterializedSequence<T>` (внутренняя векторная реализация), алиас `EagerSequence<T>`.
+ - `cpp/include/sequence.hpp` — `Sequence<T>` (интерфейс), `VectorSequence<T>` (внутренняя векторная реализация).
 - `cpp/include/lazy.hpp` — `LazySequence<T>` с генератором `std::function<T(size_t)>`, операциями `Map`, `Zip`, `Append`, `GetSubsequence`.
 - `cpp/include/types.hpp` — `Event<T>`: пара `(double t, T value)`.
 - `cpp/include/stream.hpp` — `ReadOnlyStream<T>`, `WriteOnlyStream<T>` обёртки вокруг `Sequence<Event<T>>`.
