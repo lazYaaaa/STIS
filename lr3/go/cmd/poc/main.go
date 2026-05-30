@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
 
 	"github.com/lazYaaaa/STIS/lr3/go/scenarios"
@@ -20,6 +19,7 @@ func main() {
 		}
 		scenario := s
 
+	innerLoop:
 		for {
 			fmt.Println()
 			fmt.Printf("Scenario: %s\n", scenario.Name)
@@ -40,10 +40,9 @@ func main() {
 			case 3:
 				queryRelISA(in, scenario)
 			case 4:
-				goto nextScenario
+				break innerLoop
 			}
 		}
-	nextScenario:
 	}
 }
 
@@ -116,30 +115,4 @@ func queryRelISA(in *bufio.Reader, scenario *scenarios.Scenario) {
 	}
 
 	fmt.Printf("rel-ISA(%s, %s) = %v\n", sub, sup, scenario.Ontology.IsRelSubType(sub, sup))
-}
-
-func chooseFromList(in *bufio.Reader, items []string) string {
-	for i, item := range items {
-		fmt.Printf("%d) %s\n", i+1, item)
-	}
-	fmt.Println("0) cancel")
-
-	choice := readChoice(in, 0, len(items))
-	if choice == 0 {
-		return ""
-	}
-	return items[choice-1]
-}
-
-func readChoice(in *bufio.Reader, min, max int) int {
-	for {
-		fmt.Print("> ")
-		line, _ := in.ReadString('\n')
-		line = strings.TrimSpace(line)
-		value, err := strconv.Atoi(line)
-		if err == nil && value >= min && value <= max {
-			return value
-		}
-		fmt.Printf("enter a number from %d to %d\n", min, max)
-	}
 }
