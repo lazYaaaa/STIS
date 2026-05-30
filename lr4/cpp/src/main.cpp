@@ -1,10 +1,6 @@
 #include <iostream>
-// Simple interactive CLI for stream demo
-
 #include <string>
-#include <sstream>
 #include <vector>
-#include <memory>
 #include "../include/types.hpp"
 #include "../include/sequence.hpp"
 #include "../include/stream.hpp"
@@ -19,7 +15,6 @@ int main(int argc, char** argv) {
     if (argc > 1) {
         std::string arg1(argv[1]);
         if (arg1 == "--run-tests" || arg1 == "test") {
-            // Strip the test flag before passing to Catch to avoid unrecognized token
             char* new_argv[1];
             new_argv[0] = argv[0];
             return RunCatchTests(1, new_argv);
@@ -31,7 +26,7 @@ int main(int argc, char** argv) {
         int choice = 0;
         if (!(std::cin >> choice)) break;
         std::string rest;
-        std::getline(std::cin, rest); // consume endline
+        std::getline(std::cin, rest);
 
         if (choice == 1) {
             auto a = std::make_shared<VectorSequence<Event<int>>>(std::vector<Event<int>>{{0.0,10},{1.0,20},{2.0,30}});

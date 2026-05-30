@@ -4,11 +4,10 @@
 
 namespace lr4 {
 
-// Событие с временной меткой и значением
 template<typename T>
 struct Event {
     double t; // временная метка
-    T value;  // полезная нагрузка
+    T value;  
 };
 
-} // namespace lr4
+} 
