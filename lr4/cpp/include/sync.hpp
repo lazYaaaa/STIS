@@ -16,7 +16,7 @@ namespace lr4 {
 template<typename T>
 std::shared_ptr<Sequence<std::pair<double, std::vector<std::optional<T>>>>>
 SynchronizeStreams(const std::vector<std::shared_ptr<Sequence<Event<T>>>>& streams, double tau) {
-    if (streams.empty()) return std::make_shared<MaterializedSequence<std::pair<double, std::vector<std::optional<T>>>>>(std::vector<std::pair<double, std::vector<std::optional<T>>>>{});
+    if (streams.empty()) return std::make_shared<VectorSequence<std::pair<double, std::vector<std::optional<T>>>>>(std::vector<std::pair<double, std::vector<std::optional<T>>>>{});
     std::vector<std::pair<double, std::vector<std::optional<T>>>> out;
     auto ref = streams[0];
     size_t i = 0;
@@ -48,7 +48,7 @@ SynchronizeStreams(const std::vector<std::shared_ptr<Sequence<Event<T>>>>& strea
             break;
         }
     }
-    return std::make_shared<MaterializedSequence<std::pair<double, std::vector<std::optional<T>>>>>(std::move(out));
+    return std::make_shared<VectorSequence<std::pair<double, std::vector<std::optional<T>>>>>(std::move(out));
 }
 
 } // namespace lr4

@@ -20,7 +20,7 @@ TEST_CASE("Map and Zip and Subsequence") {
     REQUIRE(mapped.Get(0) == 2);
     REQUIRE(mapped.Get(4) == 10);
 
-    auto other = std::make_shared<MaterializedSequence<uint64_t>>(std::vector<uint64_t>{10,20,30,40,50});
+    auto other = std::make_shared<VectorSequence<uint64_t>>(std::vector<uint64_t>{10,20,30,40,50});
     auto zipped = s.Zip(std::static_pointer_cast<Sequence<uint64_t>>(other));
     auto p = zipped.Get(2);
     REQUIRE(p.first == 3);
@@ -32,8 +32,8 @@ TEST_CASE("Map and Zip and Subsequence") {
 }
 
 TEST_CASE("Append concatenation") {
-    auto a = std::make_shared<MaterializedSequence<int>>(std::vector<int>{1,2,3});
-    auto b = std::make_shared<MaterializedSequence<int>>(std::vector<int>{4,5});
+    auto a = std::make_shared<VectorSequence<int>>(std::vector<int>{1,2,3});
+    auto b = std::make_shared<VectorSequence<int>>(std::vector<int>{4,5});
     LazySequence<int> la([a](size_t i){ return a->Get(i); });
     auto appended = la.Append(b);
     REQUIRE(appended->Get(0) == 1);

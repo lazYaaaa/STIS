@@ -34,8 +34,8 @@ int main(int argc, char** argv) {
         std::getline(std::cin, rest); // consume endline
 
         if (choice == 1) {
-            auto a = std::make_shared<MaterializedSequence<Event<int>>>(std::vector<Event<int>>{{0.0,10},{1.0,20},{2.0,30}});
-            auto b = std::make_shared<MaterializedSequence<Event<int>>>(std::vector<Event<int>>{{0.1,100},{1.5,200}});
+            auto a = std::make_shared<VectorSequence<Event<int>>>(std::vector<Event<int>>{{0.0,10},{1.0,20},{2.0,30}});
+            auto b = std::make_shared<VectorSequence<Event<int>>>(std::vector<Event<int>>{{0.1,100},{1.5,200}});
             std::vector<std::shared_ptr<Sequence<Event<int>>>> streams{a,b};
             double tau = 0.5;
             auto synced = SynchronizeStreams<int>(streams, tau);
@@ -57,8 +57,8 @@ int main(int argc, char** argv) {
             std::cout << "Enter the second stream similarly:\n";
             std::string line2; std::getline(std::cin, line2);
             auto events2 = parse_events(line2);
-            auto a = std::make_shared<MaterializedSequence<Event<int>>>(events1);
-            auto b = std::make_shared<MaterializedSequence<Event<int>>>(events2);
+            auto a = std::make_shared<VectorSequence<Event<int>>>(events1);
+            auto b = std::make_shared<VectorSequence<Event<int>>>(events2);
             std::vector<std::shared_ptr<Sequence<Event<int>>>> streams{a,b};
             std::cout << "Enter tau (window) as a number (e.g. 0.5): ";
             double tau = 0.5; std::cin >> tau; std::getline(std::cin, rest);

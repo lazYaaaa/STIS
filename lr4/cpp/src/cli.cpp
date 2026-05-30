@@ -23,7 +23,9 @@ std::vector<Event<int>> parse_events(const std::string &line) {
             catch (...) { }
         } else {
             try {
-                double t = std::stod(token.substr(0,pos)); int v = std::stoi(token.substr(pos+1)); out.push_back(Event<int>{t, v});
+                double t = std::stod(token.substr(0,pos)); 
+                int v = std::stoi(token.substr(pos+1)); 
+                out.push_back(Event<int>{t, v});
             } catch (...) {
             }
         }

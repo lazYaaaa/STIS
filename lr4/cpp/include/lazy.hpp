@@ -32,7 +32,7 @@ class LazySequence : public Sequence<T> {
         // materialize range [start, end)
         std::vector<T> v;
         for (size_t i = start; i < end; ++i) v.push_back(Get(i));
-        return std::make_shared<MaterializedSequence<T>>(std::move(v));
+        return std::make_shared<VectorSequence<T>>(std::move(v));
     }
 
     // Map: получить ленивую последовательность, полученную применением функции f к каждому элементу
@@ -73,10 +73,10 @@ class LazySequence : public Sequence<T> {
             }
             size_t GetMaterializedCount() const override { return 0; }
             std::shared_ptr<Sequence<T>> GetSubsequence(size_t start, size_t end) const override {
-                // materialize
-                std::vector<T> v;
-                for (size_t i = start; i < end; ++i) v.push_back(Get(i));
-                return std::make_shared<MaterializedSequence<T>>(std::move(v));
+                 // materialize
+                 std::vector<T> v;
+                 for (size_t i = start; i < end; ++i) v.push_back(Get(i));
+                 return std::make_shared<VectorSequence<T>>(std::move(v));
             }
             std::shared_ptr<Sequence<T>> a, b;
             mutable size_t left_len;

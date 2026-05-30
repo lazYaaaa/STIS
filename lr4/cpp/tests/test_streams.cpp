@@ -8,7 +8,7 @@ using namespace lr4;
 
 TEST_CASE("Stream basic read and write") {
     // create materialized sequence of events
-    auto seq = std::make_shared<MaterializedSequence<Event<int>>>(std::vector<Event<int>>{{0.1,1},{0.5,2},{1.2,3}});
+    auto seq = std::make_shared<VectorSequence<Event<int>>>(std::vector<Event<int>>{{0.1,1},{0.5,2},{1.2,3}});
     ReadOnlyStream<int> rs(seq);
     REQUIRE(!rs.IsEndOfStream());
     auto e = rs.Read();
@@ -22,8 +22,8 @@ TEST_CASE("Stream basic read and write") {
 }
 
 TEST_CASE("Synchronize two streams") {
-    auto a = std::make_shared<MaterializedSequence<Event<int>>>(std::vector<Event<int>>{{0.0,10},{1.0,20},{2.0,30}});
-    auto b = std::make_shared<MaterializedSequence<Event<int>>>(std::vector<Event<int>>{{0.1,100},{1.5,200}});
+    auto a = std::make_shared<VectorSequence<Event<int>>>(std::vector<Event<int>>{{0.0,10},{1.0,20},{2.0,30}});
+    auto b = std::make_shared<VectorSequence<Event<int>>>(std::vector<Event<int>>{{0.1,100},{1.5,200}});
     std::vector<std::shared_ptr<Sequence<Event<int>>>> streams{a,b};
     auto synced = SynchronizeStreams<int>(streams, 0.5);
     // synced should have one row per event in reference a
