@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include <catch2/catch.hpp>
 #include "lazy.hpp"
 

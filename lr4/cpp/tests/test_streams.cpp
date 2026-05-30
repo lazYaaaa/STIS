@@ -1,7 +1,9 @@
 #include <catch2/catch.hpp>
+#include <memory>
 #include "stream.hpp"
 #include "types.hpp"
 #include "sequence.hpp"
+#include "vector_sequence.hpp"
 #include "sync.hpp"
 
 using namespace lr4;

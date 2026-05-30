@@ -6,6 +6,7 @@
 #include <memory>
 #include "types.hpp"
 #include "sequence.hpp"
+#include "vector_sequence.hpp"
 
 namespace lr4 {
 

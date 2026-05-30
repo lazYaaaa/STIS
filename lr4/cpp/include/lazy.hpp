@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include "sequence.hpp"
+#include "vector_sequence.hpp"
 
 namespace lr4 {
 
@@ -13,23 +14,20 @@ class LazySequence : public Sequence<T> {
     using Generator = std::function<T(size_t)>;
 
     LazySequence() = delete;
-    LazySequence(Generator gen, std::vector<T> prefix = {}) : gen_(std::move(gen)), cache_(std::move(prefix)) {}
+    LazySequence(Generator gen, std::vector<T> prefix = {}) : gen_(std::move(gen)), materialized_(std::move(prefix)) {}
 
     T Get(size_t index) const override {
-        // mutable cache inside const method
-        if (index < cache_.size()) return cache_[index];
-        // compute up to index
-        for (size_t i = cache_.size(); i <= index; ++i) {
-            cache_.push_back(gen_(i));
+        if (index < materialized_.size()) return materialized_[index];
+        for (size_t i = materialized_.size(); i <= index; ++i) {
+            materialized_.push_back(gen_(i));
         }
-        return cache_[index];
+        return materialized_[index];
     }
 
-    size_t GetMaterializedCount() const override { return cache_.size(); }
+    size_t GetMaterializedCount() const override { return materialized_.size(); }
 
     std::shared_ptr<Sequence<T>> GetSubsequence(size_t start, size_t end) const override {
         if (end < start) throw std::out_of_range("invalid subsequence");
-        // materialize range [start, end)
         std::vector<T> v;
         for (size_t i = start; i < end; ++i) v.push_back(Get(i));
         return std::make_shared<VectorSequence<T>>(std::move(v));
@@ -73,7 +71,6 @@ class LazySequence : public Sequence<T> {
             }
             size_t GetMaterializedCount() const override { return 0; }
             std::shared_ptr<Sequence<T>> GetSubsequence(size_t start, size_t end) const override {
-                 // materialize
                  std::vector<T> v;
                  for (size_t i = start; i < end; ++i) v.push_back(Get(i));
                  return std::make_shared<VectorSequence<T>>(std::move(v));
@@ -86,7 +83,7 @@ class LazySequence : public Sequence<T> {
 
 private:
     Generator gen_;
-    mutable std::vector<T> cache_;
+    mutable std::vector<T> materialized_;
 };
 
 }
