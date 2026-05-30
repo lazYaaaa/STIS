@@ -5,7 +5,8 @@
 #include "../include/types.hpp"
 #include "../include/sequence.hpp"
 #include "../include/vector_sequence.hpp"
-#include "../include/stream.hpp"
+#include "../include/read_only_stream.hpp"
+#include "../include/write_only_stream.hpp"
 #include "../include/sync.hpp"
 #include "../include/cli.hpp"
 
