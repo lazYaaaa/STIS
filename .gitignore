@@ -1,4 +1,13 @@
-.sneps/*
+/lr4/build/
+/lr4/cpp/build/
+# Ignore common build artifacts
+*.exe
+*.o
+*.obj
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+build/.sneps/*
 sneps/
 bdz1/
 bdz2/
