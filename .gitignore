@@ -1,5 +1,6 @@
 /lr4/build/
 /lr4/cpp/build/
+/lr4/hint.md
 # Ignore common build artifacts
 *.exe
 *.o

@@ -12,15 +12,11 @@ template<typename T>
 class Sequence {
 public:
     virtual ~Sequence() = default;
-    // Получить элемент по индексу (может материализовать при необходимости)
     virtual T Get(size_t index) const = 0;
-    // Число материализованных элементов (если известно)
     virtual size_t GetMaterializedCount() const { return 0; }
-    // Вернуть материализованную подпоследовательность [start, end)
     virtual std::shared_ptr<Sequence<T>> GetSubsequence(size_t start, size_t end) const = 0;
 };
 
-// Простая реализация полностью материализованной последовательности
 template<typename T>
 class VectorSequence : public Sequence<T> {
 public:
@@ -38,9 +34,7 @@ private:
     std::vector<T> data_;
 };
 
-} // namespace lr4
+} 
 
-// Alias with friendlier name for fully materialized sequence
-namespace lr4 {
-// No alias: use `VectorSequence<T>` directly as the concrete, vector-backed implementation.
-} // namespace lr4
+
+

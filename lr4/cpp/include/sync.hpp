@@ -51,4 +51,4 @@ SynchronizeStreams(const std::vector<std::shared_ptr<Sequence<Event<T>>>>& strea
     return std::make_shared<VectorSequence<std::pair<double, std::vector<std::optional<T>>>>>(std::move(out));
 }
 
-} // namespace lr4
+}
