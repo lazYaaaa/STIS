@@ -24,7 +24,7 @@ class LazySequence : public Sequence<T> {
         return materialized_[index];
     }
 
-    size_t GetMaterializedCount() const override { return materialized_.size(); }
+    size_t GetSize() const override { return materialized_.size(); }
 
     std::shared_ptr<Sequence<T>> GetSubsequence(size_t start, size_t end) const override {
         if (end < start) throw std::out_of_range("invalid subsequence");
@@ -69,7 +69,7 @@ class LazySequence : public Sequence<T> {
                     return b->Get(index - left_len);
                 }
             }
-            size_t GetMaterializedCount() const override { return 0; }
+            size_t GetSize() const override { return 0; }
             std::shared_ptr<Sequence<T>> GetSubsequence(size_t start, size_t end) const override {
                  std::vector<T> v;
                  for (size_t i = start; i < end; ++i) v.push_back(Get(i));

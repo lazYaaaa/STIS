@@ -18,7 +18,7 @@ public:
         return data_[index];
     }
 
-    size_t GetMaterializedCount() const override { return data_.size(); }
+    size_t GetSize() const override { return data_.size(); }
 
     std::shared_ptr<Sequence<T>> GetSubsequence(size_t start, size_t end) const override {
         if (start > end || end > data_.size()) throw std::out_of_range("invalid subsequence");
@@ -29,4 +29,4 @@ private:
     std::vector<T> data_;
 };
 
-} // namespace lr4
+}
