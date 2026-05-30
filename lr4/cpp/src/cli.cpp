@@ -19,10 +19,8 @@ std::vector<Event<int>> parse_events(const std::string &line) {
     while (iss >> token) {
         auto pos = token.find(':');
         if (pos == std::string::npos) {
-            try {
-                try { int v = std::stoi(token); out.push_back(Event<int>{double(idx), v}); }
-            } catch (...) {
-            }
+            try { int v = std::stoi(token); out.push_back(Event<int>{double(idx), v}); }
+            catch (...) { }
         } else {
             try {
                 double t = std::stod(token.substr(0,pos)); int v = std::stoi(token.substr(pos+1)); out.push_back(Event<int>{t, v});

@@ -39,3 +39,9 @@ private:
 };
 
 } // namespace lr4
+
+// Alias with friendlier name for fully materialized sequence
+namespace lr4 {
+template<typename T>
+using EagerSequence = MaterializedSequence<T>;
+} // namespace lr4
