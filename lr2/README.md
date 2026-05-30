@@ -9,12 +9,8 @@
 - Иерархия: `AdultReader` ISA `Reader`, `ChildReader` ISA `Reader`, `Reader` ISA `Person`, `Librarian` ISA `Person`, `Book` ISA `Item`.
 
 Файлы в папке
-- [lr2/er_diagram.mmd](lr2/er_diagram.mmd)
-- [lr2/domain/model.md](lr2/domain/model.md)
-- [lr2/domain/ERD.png](lr2/domain/ERD.png)
-- [lr2/tests/tests.sneps](lr2/tests/tests.sneps)
+- ER-диаграмма и описание предметной области находятся в папке domain.
 
 Содержимое папки
 - Пояснительная версия оформлена как описание предметной области.
 - Исполняемая часть написана на Java.
-- Примеры фактов и запросов находятся в тестовой части лабораторной.
