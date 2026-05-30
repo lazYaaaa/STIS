@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/lazYaaaa/STIS/lr3/go/scenarios"
+    "github.com/lazYaaaa/STIS/lr1/go/scenarios"
 )
 
 func chooseScenario(in *bufio.Reader) *scenarios.Scenario {
