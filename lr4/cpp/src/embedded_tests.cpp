@@ -3,6 +3,7 @@
 
 #include "../tests/test_lazy.cpp"
 #include "../tests/test_streams.cpp"
+#include "../tests/test_stress.cpp"
 
 int RunCatchTests(int argc, char* argv[]) {
     Catch::Session session;

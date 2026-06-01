@@ -1,5 +1,6 @@
 #include <string>
 #include "../include/app.hpp"
+#include "../include/stress.hpp"
 
 using namespace lr4;
 
@@ -13,6 +14,8 @@ int main(int argc, char** argv) {
         std::string arg1(argv[1]);
         if (arg1 == "--run-tests" || arg1 == "test") {
             mode = Mode::RunTests;
+        } else if (arg1 == "--run-stress") {
+            mode = Mode::RunTests;
         }
     }
 
@@ -20,6 +23,12 @@ int main(int argc, char** argv) {
         case Mode::RunTests: {
             char* new_argv[1];
             new_argv[0] = argv[0];
+            if (argc > 1) {
+                std::string arg1(argv[1]);
+                if (arg1 == "--run-stress") {
+                    return lr4::RunStressFromEnv();
+                }
+            }
             return RunCatchTests(1, new_argv);
         }
         case Mode::RunCli:

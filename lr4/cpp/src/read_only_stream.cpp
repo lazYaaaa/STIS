@@ -80,4 +80,4 @@ size_t ReadOnlyStream<T>::Seek(size_t idx) {
 template class ReadOnlyStream<int>;
 template class ReadOnlyStream<std::string>;
 
-} // namespace lr4
+}

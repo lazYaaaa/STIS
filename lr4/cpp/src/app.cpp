@@ -1,6 +1,11 @@
 #include "../include/app.hpp"
 
+#include <chrono>
+#include <cstdlib>
+#include <ctime>
 #include <filesystem>
+#include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <memory>
 #include <sstream>
@@ -9,16 +14,55 @@
 #include <vector>
 #include "../include/cli.hpp"
 #include "../include/demo_helpers.hpp"
-#include "../include/read_only_stream.hpp"
 #include "../include/sequence.hpp"
 #include "../include/sync.hpp"
 #include "../include/types.hpp"
 #include "../include/vector_sequence.hpp"
-#include "../include/write_only_stream.hpp"
+#include "../include/stress.hpp"
 
 namespace lr4 {
 
 namespace {
+
+size_t read_env_size(const char* key, size_t fallback) {
+    const char* env = std::getenv(key);
+    if (!env || !*env) return fallback;
+    try {
+        return static_cast<size_t>(std::stoul(env));
+    } catch (...) {
+        return fallback;
+    }
+}
+
+int read_env_int(const char* key, int fallback) {
+    const char* env = std::getenv(key);
+    if (!env || !*env) return fallback;
+    try {
+        return std::stoi(env);
+    } catch (...) {
+        return fallback;
+    }
+}
+
+std::string read_env_str(const char* key, const std::string& fallback) {
+    const char* env = std::getenv(key);
+    if (!env || !*env) return fallback;
+    return std::string(env);
+}
+
+std::string timestamp_string() {
+    auto now = std::chrono::system_clock::now();
+    std::time_t tt = std::chrono::system_clock::to_time_t(now);
+    std::tm tm{};
+#if defined(_WIN32)
+    localtime_s(&tm, &tt);
+#else
+    localtime_r(&tt, &tm);
+#endif
+    std::ostringstream oss;
+    oss << std::put_time(&tm, "%Y%m%d_%H%M%S");
+    return oss.str();
+}
 
 void run_example_sync_demo() {
     auto a_events = std::vector<Event<std::string>>{{0.0, "alpha"}, {1.0, "beta"}, {2.0, "gamma"}};
@@ -68,34 +112,6 @@ void run_manual_sync_demo() {
     print_synced_result(synced);
 }
 
-void run_file_demo() {
-    auto temp_path = std::filesystem::current_path() / "lr4_stream_demo.csv";
-    WriteOnlyStream<std::string> writer(temp_path.string().c_str(), [](const Event<std::string>& e) {
-        return std::to_string(e.t) + "," + e.value;
-    });
-    writer.Open();
-    writer.Write({0.0, "hello"});
-    writer.Write({1.0, "world"});
-    writer.Close();
-
-    ReadOnlyStream<std::string> reader(temp_path.string().c_str(), [](const std::string& line) {
-        std::istringstream iss(line);
-        std::string t_text;
-        std::string value_text;
-        if (!std::getline(iss, t_text, ',')) throw std::runtime_error("invalid csv row");
-        if (!std::getline(iss, value_text, ',')) throw std::runtime_error("invalid csv row");
-        const double t = std::stod(t_text);
-        return Event<std::string>{t, value_text};
-    });
-    reader.Open();
-    std::cout << "File demo saved to " << temp_path.string() << ":\n";
-    while (!reader.IsEndOfStream()) {
-        auto e = reader.Read();
-        std::cout << e.t << " -> " << e.value << "\n";
-    }
-    reader.Close();
-}
-
 } 
 
 int run_cli() {
@@ -116,9 +132,94 @@ int run_cli() {
             case 2:
                 run_manual_sync_demo();
                 break;
-            case 3:
-                run_file_demo();
+            case 3: {
+                // Interactive stress test runner
+                std::cout << "Stress test runner\n";
+                size_t env_n = read_env_size("LR4_STRESS", 10000);
+                int env_runs = read_env_int("LR4_STRESS_RUNS", 1);
+                int env_pause = read_env_int("LR4_STRESS_PAUSE_MS", 0);
+                std::string env_measure = read_env_str("LR4_STRESS_MEASURE", "time");
+                std::string env_outdir = read_env_str("LR4_STRESS_OUTDIR", "results");
+
+                std::cout << "Enter events count [default " << env_n << "]: ";
+                size_t n = env_n;
+                std::string n_line;
+                std::getline(std::cin, n_line); // consume rest
+                std::getline(std::cin, n_line);
+                if (!n_line.empty()) {
+                    try {
+                        n = static_cast<size_t>(std::stoul(n_line));
+                    } catch (...) {
+                        n = env_n;
+                    }
+                }
+                std::cout << "Number of runs (repeat measurements) [default " << env_runs << "]: ";
+                int runs = env_runs; std::cin >> runs;
+
+                std::cout << "Pause between runs in ms [default " << env_pause << "]: ";
+                int pauseMs = env_pause;
+                std::string pause_line;
+                std::getline(std::cin, pause_line); // consume rest
+                std::getline(std::cin, pause_line);
+                if (!pause_line.empty()) {
+                    try {
+                        pauseMs = std::stoi(pause_line);
+                    } catch (...) {
+                        pauseMs = env_pause;
+                    }
+                }
+
+                std::string run_ts = timestamp_string();
+                std::string outdir;
+                std::cout << "Output directory [default " << env_outdir << "/run_<timestamp>]: ";
+                std::string tmp;
+                std::getline(std::cin, tmp); // consume rest
+                std::getline(std::cin, tmp);
+                if (!tmp.empty()) {
+                    outdir = tmp;
+                } else {
+                    outdir = (std::filesystem::path(env_outdir) / ("run_" + run_ts)).string();
+                }
+
+                std::cout << "Measure to plot (time | throughput) [default " << env_measure << "]: ";
+                std::string measure; std::getline(std::cin, measure);
+                if (measure.empty()) measure = env_measure;
+
+                std::cout << "Running stress: n=" << n << ", runs=" << runs << ", pause_ms=" << pauseMs << ", out=" << outdir << ", measure=" << measure << "\n";
+                RunStress(n, runs, outdir, measure, pauseMs);
+                // try to call Python plot script if available
+                // try several relative locations for the plotting script
+                std::vector<std::string> candidates = {"scripts\\plot_results.py", "..\\scripts\\plot_results.py", "..\\..\\scripts\\plot_results.py", "..\\..\\..\\scripts\\plot_results.py", "..\\..\\..\\..\\scripts\\plot_results.py"};
+                std::string script_path;
+                for (auto &c : candidates) {
+                    if (std::filesystem::exists(c)) { script_path = c; break; }
+                }
+                std::string csv_path = (std::filesystem::path(outdir) / (std::to_string(n) + "_stress.csv")).string();
+                std::string png_path = (std::filesystem::path(outdir) / (std::to_string(n) + "_stress.png")).string();
+                if (!script_path.empty()) {
+                    std::string cmd = "python " + script_path + " " + outdir + " " + std::to_string(n) + " " + measure;
+                    std::cout << "Attempting to create plot with: " << cmd << "\n";
+                    int r = std::system(cmd.c_str());
+                    if (r != 0) std::cout << "Plotting failed or python not available. CSV written to " << outdir << "\n";
+                } else {
+                    std::cout << "Plot script not found in expected locations. CSV written to " << outdir << "\n";
+                }
+                const auto report_path = std::filesystem::path(outdir) / ("report_" + run_ts + ".md");
+                std::ofstream report(report_path);
+                if (report) {
+                    report << "# Stress run report\n\n";
+                    report << "- timestamp: " << run_ts << "\n";
+                    report << "- n: " << n << "\n";
+                    report << "- runs: " << runs << "\n";
+                    report << "- pause_ms: " << pauseMs << "\n";
+                    report << "- measure: " << measure << "\n\n";
+                    report << "## Files\n";
+                    report << "- CSV: " << csv_path << "\n";
+                    report << "- Plot: " << png_path << "\n";
+                }
+                std::cout << "Report saved to " << report_path.string() << "\n";
                 break;
+            }
             case 4:
                 return 0;
             default:

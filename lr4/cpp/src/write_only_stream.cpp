@@ -63,4 +63,4 @@ const std::vector<Event<T>>& WriteOnlyStream<T>::Buffer() const {
 template class WriteOnlyStream<int>;
 template class WriteOnlyStream<std::string>;
 
-} // namespace lr4
+}

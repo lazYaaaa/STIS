@@ -34,4 +34,4 @@ private:
 
 extern template class WriteOnlyStream<int>;
 
-} // namespace lr4
+}

@@ -7,7 +7,7 @@ namespace lr4 {
 void print_menu() {
     std::cout << "1) Demo: synchronize example streams\n";
     std::cout << "2) Enter two streams manually and synchronize\n";
-    std::cout << "3) File I/O demo\n";
+    std::cout << "3) Run stress tests\n";
     std::cout << "4) Exit\n";
     std::cout << "Select an option: ";
 }
