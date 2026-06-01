@@ -144,7 +144,7 @@ int run_cli() {
                 std::cout << "Enter events count [default " << env_n << "]: ";
                 size_t n = env_n;
                 std::string n_line;
-                std::getline(std::cin, n_line); // consume rest
+                std::getline(std::cin, n_line);
                 std::getline(std::cin, n_line);
                 if (!n_line.empty()) {
                     try {
@@ -159,7 +159,7 @@ int run_cli() {
                 std::cout << "Pause between runs in ms [default " << env_pause << "]: ";
                 int pauseMs = env_pause;
                 std::string pause_line;
-                std::getline(std::cin, pause_line); // consume rest
+                std::getline(std::cin, pause_line);
                 std::getline(std::cin, pause_line);
                 if (!pause_line.empty()) {
                     try {
@@ -173,7 +173,7 @@ int run_cli() {
                 std::string outdir;
                 std::cout << "Output directory [default " << env_outdir << "/run_<timestamp>]: ";
                 std::string tmp;
-                std::getline(std::cin, tmp); // consume rest
+                std::getline(std::cin, tmp);
                 std::getline(std::cin, tmp);
                 if (!tmp.empty()) {
                     outdir = tmp;
