@@ -9,8 +9,7 @@ CMakeCache.txt
 cmake_install.cmake
 build/.sneps/*
 sneps/
-bdz1/
-bdz2/
+bdz1-2/
 *.pdf
 *.env
 *.csv

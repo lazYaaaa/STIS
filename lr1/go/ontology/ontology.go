@@ -2,8 +2,8 @@ package ontology
 
 type Ontology struct {
 	ByName       map[string]*Concept
-	Instances    map[string][]*Concept // instance name -> declared concepts
-	RelationType map[string]*Concept   // treat relation types as concepts for rel-ISA
+	Instances    map[string][]*Concept 
+	RelationType map[string]*Concept
 }
 
 func NewOntology() *Ontology {

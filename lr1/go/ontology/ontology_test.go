@@ -46,7 +46,6 @@ func TestLibraryInstanceOf(t *testing.T) {
 		t.Fatalf("expected book1 instance-of Item")
 	}
 
-	// relation type examples
 	o.AddRelationType("borrows")
 	o.AddRelationType("recommends")
 	o.AddRelationType("borrows_reader", "borrows")
